@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Swasthya Sahayak</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .check-btn {
+            background: #3498db;
+            color: white;
+        }
+
+        .check-btn:hover {
+            background: #2980b9;
+        }
+
+        .emergency-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .emergency-btn:hover {
+            background: #c0392b;
+        }
+
+        .hospital-btn {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .hospital-btn:hover {
+            background: #27ae60;
+        }
+
+        .chat-box {
+            margin-top: 20px;
+        }
+
+        .response {
+            background: #ecf0f1;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .voice-btn {
+            background: #9b59b6;
+            color: white;
+        }
+
+        .voice-btn:hover {
+            background: #8e44ad;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>🩺 Swasthya Sahayak</h2>
+
+    <!-- FORM -->
+    <form action="process.php" method="POST">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="number" name="age" placeholder="Your Age" required>
+
+        <textarea name="symptoms" placeholder="Describe your symptoms..." required></textarea>
+
+        <button class="check-btn" type="submit">Check Health</button>
+    </form>
+
+    <!-- EMERGENCY -->
+    <a href="emergency.php">
+        <button class="emergency-btn">🚨 Emergency</button>
+    </a>
+
+    <!-- HOSPITAL -->
+    <button class="hospital-btn" onclick="findHospital()">🏥 Find Nearby Hospitals</button>
+
+    <!-- CHATBOT -->
+    <div class="chat-box">
+        <input type="text" id="chatInput" placeholder="Ask health question...">
+        <button onclick="sendMessage()">Ask</button>
+        <button class="voice-btn" onclick="startVoice()">🎤 Speak</button>
+
+        <div id="response" class="response"></div>
+    </div>
+</div>
+
+<script>
+function sendMessage() {
+    let msg = document.getElementById("chatInput").value;
+
+    fetch("chatbot.php", {
+        method: "POST",
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        body: "message=" + msg
+    })
+    .then(res => res.text())
+    .then(data => {
+        document.getElementById("response").innerHTML = data;
+    });
+}
+
+function startVoice() {
+    let recognition = new webkitSpeechRecognition();
+    recognition.lang = "en-IN";
+
+    recognition.onresult = function(event) {
+        let speech = event.results[0][0].transcript;
+        document.getElementById("chatInput").value = speech;
+    };
+
+    recognition.start();
+}
+
+function findHospital() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(pos) {
+            let lat = pos.coords.latitude;
+            let lon = pos.coords.longitude;
+
+            window.open(`https://www.google.com/maps/search/hospitals/@${lat},${lon},15z`);
+        });
+    } else {
+        alert("Location not supported");
+    }
+}
+</script>
+
+</body>
+</html>
