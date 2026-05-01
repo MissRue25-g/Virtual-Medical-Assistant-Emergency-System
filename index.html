@@ -1,105 +1,139 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Swasthya Sahayak</title>
+    <title>Virtual Medical Assistant</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #4facfe, #00f2fe);
-            margin: 0;
-            padding: 0;
-        }
+       
 
-        .container {
-            max-width: 400px;
-            margin: 40px auto;
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0px 10px 30px rgba(0,0,0,0.2);
-        }
+    body {
+    
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
 
-        h2 {
-            text-align: center;
-            color: #2c3e50;
-        }
+    background: linear-gradient(rgba(0,0,50,0.7), rgba(0,0,50,0.7)),
+                url('download.jpg');
 
-        input, textarea {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            border-radius: 10px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-        }
+    background-size: cover;
+    background-position: center;
+}
 
-        button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 12px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
 
-        .check-btn {
-            background: #3498db;
-            color: white;
-        }
+/* Background Animation */
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 
-        .check-btn:hover {
-            background: #2980b9;
-        }
+/* GLASS CARD */
+.container {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 20px;
 
-        .emergency-btn {
-            background: #e74c3c;
-            color: white;
-        }
+    background: rgba(244, 241, 241, 0.879);
+    backdrop-filter: blur(15px);
 
-        .emergency-btn:hover {
-            background: #c0392b;
-        }
+    box-shadow: 0px 10px 40px rgba(0,0,0,0.5);
+    color: white;
+}
 
-        .hospital-btn {
-            background: #2ecc71;
-            color: white;
-        }
+/* TITLE */
+h2 {
+    text-align: center;
+    color: #2f0353;
+}
 
-        .hospital-btn:hover {
-            background: #27ae60;
-        }
+/* INPUTS */
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-size: 14px;
 
-        .chat-box {
-            margin-top: 20px;
-        }
+    background: rgba(255,255,255,0.2);
+    color: rgb(48, 5, 67);
+}
 
-        .response {
-            background: #ecf0f1;
-            padding: 10px;
-            border-radius: 10px;
-            margin-top: 10px;
-        }
+/* BUTTON BASE */
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-        .voice-btn {
-            background: #9b59b6;
-            color: white;
-        }
+/* CHECK BUTTON */
+.check-btn {
+    background: linear-gradient(135deg, #3604b5, #023f8a);
+    color: white;
+}
 
-        .voice-btn:hover {
-            background: #8e44ad;
-        }
-    </style>
+.check-btn:hover {
+    transform: scale(1.05);
+}
+
+/* EMERGENCY BUTTON */
+.emergency-btn {
+    background: linear-gradient(135deg, #7e0622, #8a1c09);
+    color: white;
+}
+
+.emergency-btn:hover {
+    transform: scale(1.05);
+}
+
+/* HOSPITAL BUTTON */
+.hospital-btn {
+    background: linear-gradient(135deg, #4d0475, #015bb5);
+    color: white;
+}
+
+.hospital-btn:hover {
+    transform: scale(1.05);
+}
+
+/* CHAT BOX */
+.chat-box {
+    margin-top: 20px;
+}
+
+/* RESPONSE */
+.response {
+    background: rgba(255,255,255,0.15);
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+/* VOICE BUTTON */
+.voice-btn {
+    background: linear-gradient(135deg, #430578, #350496);
+    color: white;
+}
+
+.voice-btn:hover {
+    transform: scale(1.05);
+}
+</style>
 </head>
 
 <body>
 
 <div class="container">
-    <h2>🩺 Swasthya Sahayak</h2>
+    <h2> Virtual Medical Assistant & Emergency System</h2>
+    
 
     <!-- FORM -->
     <form action="process.php" method="POST">
@@ -113,17 +147,28 @@
 
     <!-- EMERGENCY -->
     <a href="emergency.php">
-        <button class="emergency-btn">🚨 Emergency</button>
-    </a>
+        <button class="emergency-btn" onclick="sendEmergency()">Emergency</button>
+        </a>
+
+<script>
+function sendEmergency() {
+    fetch("emergency.php")
+    .then(() => {
+        window.location.href = "tel:108";
+    });
+}
+</script>
+
+    
 
     <!-- HOSPITAL -->
-    <button class="hospital-btn" onclick="findHospital()">🏥 Find Nearby Hospitals</button>
+    <button class="hospital-btn" onclick="findHospital()"> Find Nearby Hospitals</button>
 
     <!-- CHATBOT -->
     <div class="chat-box">
         <input type="text" id="chatInput" placeholder="Ask health question...">
         <button onclick="sendMessage()">Ask</button>
-        <button class="voice-btn" onclick="startVoice()">🎤 Speak</button>
+        <button class="voice-btn" onclick="startVoice()"> Speak</button>
 
         <div id="response" class="response"></div>
     </div>
